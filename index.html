@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#319197">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analog Clock</title>
+   
+   <style>
+    body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background:black;
+    margin: 0;
+}
+#button{
+  position: relative;
+  top: 40%;
+  left: 20%;
+   /* transform: translate(-50%, -50%);  */
+}
+.clock {
+    width: 70dvh;
+    height: 70dvh;
+    border: 5px solid rgb(8, 8, 8);
+    background: url(cl1.png) no-repeat #f0f0f5;
+    position: relative;
+    background-size: 100%;
+    border-radius: 50%;
+    transition: background-size 0.5s ease; /* Smooth transition */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.68);
+}
+
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom;
+    background: white;
+    border-radius: 5px;
+}
+
+.hour {
+    width: 6px;
+    height: 20dvh;
+    background: rgb(28, 28, 28);
+    transform: translateX(-50%);
+}
+
+.minute {
+    width: 4px;
+    height: 25dvh;
+    background: rgb(15, 15, 15);
+    transform: translateX(-52%);
+}
+
+.second {
+    width: 2px;
+    height: 30dvh;
+    background: rgb(26, 230, 8);
+    transform: translateX(-50%);
+}
+
+.center {
+    width: 15px;
+    height: 15px;
+    background: rgb(243, 15, 15);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.darkmode{
+  background: url(cl1.png) no-repeat rgb(66, 64, 64);
+    position: relative;
+    background-size: 100%; /* Zoom in on the clock image */
+}
+.toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.toggle-slot {
+  font-size: 10px;
+  position: relative;
+  height: 3.5em;
+  width: 7em;
+  border: 0px solid transparent;
+  border-radius: 10em;
+  background-color: white;
+  transition: background-color 250ms;
+}
+
+.toggle-checkbox:checked ~ .toggle-slot {
+  background-color: #374151;
+}
+
+.toggle-button {
+  transform: translate(0.3em, 0.25em);
+  position: absolute;
+  height: 3em;
+  width: 3em;
+  border-radius: 50%;
+  background-color: #ffeccf;
+  box-shadow: inset 0px 0px 0px 0.75em #ffbb52;
+  transition: background-color 250ms, border-color 250ms, transform 500ms cubic-bezier(.26,2,.46,.71);
+}
+
+.toggle-checkbox:checked ~ .toggle-slot .toggle-button {
+  background-color: #485367;
+  box-shadow: inset 0px 0px 0px 0.75em white;
+  transform: translate(3.65em, 0.25em);
+}
+
+.sun-icon {
+  position: absolute;
+  height: 6em;
+  width: 6em;
+  color: #ffbb52;
+}
+
+.sun-icon-wrapper {
+  position: absolute;
+  transform: translate(2em, 2em) rotate(15deg);
+  transform-origin: 50% 50%;
+  transition: opacity 150ms, transform 500ms cubic-bezier(.26,2,.46,.71);
+}
+
+.toggle-checkbox:checked ~ .toggle-slot .sun-icon-wrapper {
+  opacity: 0;
+  transform: translate(3em, 2em) rotate(0deg);
+}
+
+.moon-icon {
+  position: absolute;
+  height: 6em;
+  width: 6em;
+  color: white;
+}
+
+.moon-icon-wrapper {
+  position: absolute;
+  height: 6em;
+  width: 6em;
+  opacity: 0;
+  transform: translate(11em, 2em) rotate(0deg);
+  transform-origin: 50% 50%;
+  transition: opacity 150ms, transform 500ms cubic-bezier(.26,2.5,.46,.71);
+}
+
+.toggle-checkbox:checked ~ .toggle-slot .moon-icon-wrapper {
+  opacity: 1;
+  transform: translate(2em, 2em) rotate(-15deg);
+}
+#sound{
+ height: 5dvh; 
+ width: 10dvh;
+ position: absolute;
+  top: 87%;
+  left: 58%;
+}
+/* Digital Clock Styling */
+.digital-clock {
+    display: none;
+    font-size: 40dvh;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+   </style>
+</head>
+<body>
+<div id="button">
+<label>
+    <input class="toggle-checkbox" type="checkbox">
+    <div class="toggle-slot">
+      <div class="sun-icon-wrapper">
+        <div class="iconify sun-icon" data-icon="feather-sun" data-inline="false"></div>
+      </div>
+      <div class="toggle-button"></div>
+      <div class="moon-icon-wrapper">
+        <div class="iconify moon-icon" data-icon="feather-moon" data-inline="false"></div>
+      </div>
+    </div>
+  </label>
+</div>
+<p>
+  <button id="sound">Sound</button>
+</p>
+  <audio id="second-sound" src="second.mp3" loop></audio>
+
+    <div class="clock" id="clock" ondblclick="toggleClock()">
+        <div class="hand hour" id="hour-hand"></div>
+        <div class="hand minute" id="minute-hand"></div>
+        <div class="hand second" id="second-hand"></div>
+        <div class="center"></div>
+    </div>
+
+
+     <!-- Digital Clock (Initially Hidden) -->
+     <div class="digital-clock" id="digital-clock" ondblclick="toggleClock()">
+      <span id="digital-time">00:00:00</span>
+  </div>
+</div>
+   <script>
+
+    function toggleDarkMode() {
+        const clockElement = document.getElementsByClassName("clock")[0];
+        clockElement.classList.toggle("darkmode");
+    }
+let x=document.getElementById("button");
+x.addEventListener("click",function(){
+  let checkbox=document.querySelector(".toggle-checkbox");
+  let checkboxState=checkbox.checked;
+  if(checkboxState==true){
+    document.body.style.backgroundColor="#fff";
+  }
+  else{
+  document.body.style.backgroundColor="#000";
+  toggleDarkMode();
+  }
+  });
+
+ let s= document.getElementById("sound");
+ s.addEventListener("click",function(){
+  let audio = document.getElementById("second-sound");
+  audio.play();
+  });
+    function updateClock() {
+    const now = new Date();
+    const hours = now.getHours() % 12;
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    const hourDeg = (hours * 30) + (minutes * 0.5);
+    const minuteDeg = (minutes * 6);
+    const secondDeg = (seconds * 6);
+    document.getElementById("hour-hand").style.transform = `rotate(${hourDeg}deg)`;
+    document.getElementById("minute-hand").style.transform = `rotate(${minuteDeg}deg)`;
+    document.getElementById("second-hand").style.transform = `rotate(${secondDeg}deg)`;
+    secondSound.play();
+}
+setInterval(updateClock, 1000);
+
+function updateDigitalClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+
+    // Format time as 2-digit numbers
+    hours = hours < 10 ? "0" + hours : hours;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    document.getElementById("digital-time").textContent = `${hours}:${minutes}:${seconds}`;
+}
+//Function to toggle between analog and digital clock
+function toggleClock() {
+    const analogClock = document.getElementById("clock");
+    const digitalClock = document.getElementById("digital-clock");
+
+    if (analogClock.style.display === "none") {
+        analogClock.style.display = "flex";
+        x.style.display="flex";
+        s.style.display="block";
+
+        digitalClock.style.display = "none";
+    } else {
+        analogClock.style.display = "none";
+        x.style.display="none";
+        s.style.display="none";
+        digitalClock.style.display = "flex";
+    }
+}
+setInterval(updateDigitalClock, 1000);
+updateDigitalClock();
+updateClock();
+   </script>
+</body>
+</html>
