@@ -5,7 +5,6 @@
     <meta name="theme-color" content="#319197">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analog Clock</title>
-   
    <style>
     body {
     display: flex;
@@ -14,6 +13,7 @@
     height: 100vh;
     background:black;
     margin: 0;
+    padding: 0;
 }
 #button{
   position: relative;
@@ -22,8 +22,8 @@
    /* transform: translate(-50%, -50%);  */
 }
 .clock {
-    width: 70dvh;
-    height: 70dvh;
+    width: 70vmin;
+    height: 70vmin;
     border: 5px solid rgb(8, 8, 8);
     background: url(cl1.png) no-repeat #f0f0f5;
     position: relative;
@@ -44,21 +44,21 @@
 
 .hour {
     width: 6px;
-    height: 20dvh;
+    height: 20vmin;
     background: rgb(28, 28, 28);
     transform: translateX(-50%);
 }
 
 .minute {
     width: 4px;
-    height: 25dvh;
+    height: 25vmin;
     background: rgb(15, 15, 15);
     transform: translateX(-52%);
 }
 
 .second {
     width: 2px;
-    height: 30dvh;
+    height: 30vmin;
     background: rgb(26, 230, 8);
     transform: translateX(-50%);
 }
@@ -168,12 +168,12 @@
 /* Digital Clock Styling */
 .digital-clock {
     display: none;
-    font-size: 40dvh;
+    font-size: 20vmin;
     color: white;
     font-family: 'Arial', sans-serif;
     text-align: center;
     background: black;
-    padding: 10px 20px;
+    padding: 2vmin 2vmin;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
